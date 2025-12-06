@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI](https://img.shields.io/pypi/v/transiscope.svg)](https://pypi.org/project/transiscope/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17762015.svg)](https://doi.org/10.5281/zenodo.16789347)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17762015.svg)](https://doi.org/10.5281/zenodo.17762015)
 
 **An Interactive Open-Source Platform for Automated Detection and Analysis of Transient Events in Time-Lapse Microscopy**
 
