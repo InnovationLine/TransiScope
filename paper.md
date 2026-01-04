@@ -32,7 +32,7 @@ Quantifying transient cellular events—such as calcium transients, vesicle exoc
 
 # Statement of Need
 
-Analyzing dynamic cellular processes from time-lapse microscopy requires detecting and quantifying transient events—discrete, short-lived changes in fluorescence intensity that represent biological phenomena such as neurotransmitter release, calcium signaling, or vesicle fusion [@Pelet2012; @Hummer2017]. While powerful algorithms for event detection exist, including Difference of Gaussians (DoG) filtering [@Yuan2014], Otsu thresholding [@Cao2019], and peak detection methods, applying these techniques currently requires either significant programming expertise or navigating complex, multi-step workflows that introduce subjective bias through manual parameter tuning [@OBrien2016; @Savage2023].
+Analyzing dynamic cellular processes from time-lapse microscopy requires detecting and quantifying transient events—discrete, short-lived changes in fluorescence intensity that represent biological phenomena such as neurotransmitter release, calcium signaling, or vesicle fusion [@Pelet2012; @Hummer2017]. While powerful algorithms for event detection exist, including Difference of Gaussians (DoG) filtering [@Kurban2023], Otsu thresholding [@Cao2019], and peak detection methods, applying these techniques currently requires either significant programming expertise or navigating complex, multi-step workflows that introduce subjective bias through manual parameter tuning [@OBrien2016; @Savage2023].
 
 Existing bioimage analysis platforms face specific limitations for temporal event analysis:
 
