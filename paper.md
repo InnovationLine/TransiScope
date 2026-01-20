@@ -51,6 +51,30 @@ This landscape reveals a critical usability gap: **no existing tool provides a u
 
 By making sophisticated event detection accessible while maintaining scientific rigor, `TransiScope` empowers a broader community of researchers to perform quantitative temporal analysis of cellular dynamics. The software is particularly valuable for laboratories studying neurotransmission, calcium signaling, exocytosis, and other rapid cellular processes where manual analysis is prohibitively time-consuming and prone to observer bias.
 
+# Software Design
+
+`TransiScope`'s architecture reflects deliberate design decisions balancing usability, extensibility, and scientific rigor. The software employs a three-layer architecture: a user interface layer built on Napari, an application logic layer in pure Python modules (`io_operations.py`, `roi_handler.py`, `analysis_processor.py`, `utilities.py`), and integration with established scientific libraries (NumPy, SciPy, scikit-image, OpenCV, Shapely).
+
+**Build vs. Contribute Decision:** We evaluated contributing to existing platforms but identified fundamental mismatches. ImageJ/Fiji plugins like TrackMate excel at spatial object detection (tracking *where* particles exist across frames) but are not designed for temporal event analysis (detecting *when* intensity transients occur). In validation testing, TrackMate detected 18,000 spots while `TransiScope` identified 13 temporal events from identical data—these tools answer fundamentally different biological questions. CellProfiler's batch-processing paradigm and ThunderSTORM's single-molecule focus similarly cannot accommodate our interactive, real-time parameter optimization workflow. Building on Napari allowed us to create a cohesive temporal analysis workflow impossible within existing frameworks.
+
+**Key Design Trade-offs:**
+
+1. **GUI-first vs. scriptable API**: We prioritized accessibility for non-programmers, with modular architecture enabling future API exposure.
+2. **Algorithm breadth vs. depth**: Multiple detection methods (DoG, Otsu, step detection) with automated parameterization let users choose approaches suited to their signal characteristics.
+3. **Data-driven parameterization**: The "Auto-set Parameters" feature analyzes ROI intensity traces to propose optimal detection thresholds, replacing subjective manual tuning with reproducible, signal-adapted settings.
+
+# Research Impact Statement
+
+`TransiScope` addresses a practical need identified through direct research experience: the lead author (R.D.) has used time-lapse microscopy throughout her PhD and postdoctoral research studying vesicle dynamics and neurotransmitter release at the University of Texas at Austin and Texas Woman's University. The software emerged from years of frustration with existing workflows requiring either programming expertise or tedious manual parameter tuning that limited reproducibility across experiments and laboratories.
+
+**Validation and Research Readiness:**
+
+`TransiScope` demonstrates research readiness through systematic validation using publicly available microscopy datasets [@Hummer2017; @Hummer2020]. Testing confirms high specificity (background ROIs correctly identify zero events with no false positives), biological sensitivity (High-K⁺ stimulation datasets show expected 2.5-3× increase in event rates compared to unstimulated conditions), and objectivity (automated Otsu thresholding eliminates false positives that arise with manual threshold selection).
+
+**Community Readiness:**
+
+The software is packaged for immediate adoption: available on PyPI (`pip install transiscope`), archived on Zenodo with DOI, and includes comprehensive documentation with a Jupyter notebook tutorial. The project follows open-source best practices including MIT licensing, contribution guidelines, public issue tracking, and modular architecture enabling community extension. `TransiScope` targets laboratories studying calcium signaling, exocytosis, and synaptic transmission—domains where quantitative temporal event analysis is routine but accessible, reproducible tools remain scarce.
+
 # Software Description
 
 ## Architecture
@@ -130,6 +154,10 @@ A typical workflow proceeds as follows:
 8. **Export**: Save results to CSV for statistical analysis or plotting
 
 A comprehensive Jupyter notebook tutorial is included in the `examples/` directory, providing step-by-step guidance with sample data.
+
+# AI Usage Disclosure
+
+Generative AI tools (including ChatGPT and GitHub Copilot) were used during development for coding assistance, debugging support, and documentation drafting. All AI-generated content was reviewed, tested, validated, and modified by the authors. The core scientific methodology—including algorithm selection, the data-driven parameter optimization approach, validation strategy using published datasets, and biological interpretation of results—reflects the authors' domain expertise developed through years of microscopy research. The authors take full responsibility for all content in this submission.
 
 # Acknowledgements
 
