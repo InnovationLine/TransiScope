@@ -51,17 +51,32 @@ This landscape reveals a critical usability gap: **no existing tool provides a u
 
 By making sophisticated event detection accessible while maintaining scientific rigor, `TransiScope` empowers a broader community of researchers to perform quantitative temporal analysis of cellular dynamics. The software is particularly valuable for laboratories studying neurotransmission, calcium signaling, exocytosis, and other rapid cellular processes where manual analysis is prohibitively time-consuming and prone to observer bias.
 
+# State of the Field
+
+Several powerful open-source platforms exist for bioimage analysis, but each presents specific limitations for temporal event detection in time-lapse microscopy.
+
+**ImageJ/Fiji** [@Schindelin2012] with plugins like TrackMate [@Cayuela2023] offers extensive functionality for particle tracking but demands complex, multi-step workflows. Critically, TrackMate performs spatial object detection—identifying *where* fluorescent objects exist in each frame—rather than temporal event analysis. In direct comparison using identical data, TrackMate detected 18,000 spots (repeated detection of the same cells across frames) while `TransiScope` identified 13 distinct temporal events (when neurons exhibited transient activity). These tools answer fundamentally different biological questions.
+
+**CellProfiler** [@Carpenter2006] excels at high-throughput, segmentation-based analysis but is not optimized for detecting rapid, intensity-based temporal events within user-defined regions of interest.
+
+**ThunderSTORM** [@Ovesny2014], while powerful for single-molecule localization microscopy, is not designed for analyzing dynamic intensity fluctuations characteristic of functional events like neurotransmitter release or calcium transients.
+
+**Build vs. Contribute Justification:** Contributing temporal event detection to these platforms would require fundamental architectural changes incompatible with their core designs. TrackMate's frame-by-frame object detection paradigm, CellProfiler's batch-processing workflow, and ThunderSTORM's localization focus cannot accommodate our interactive, data-driven parameter optimization approach. Building on Napari—a platform designed for interactive n-dimensional visualization—provided the architectural foundation necessary for real-time ROI analysis and automated parameter estimation.
+
+
 # Software Design
 
 `TransiScope`'s architecture reflects deliberate design decisions balancing usability, extensibility, and scientific rigor. The software employs a three-layer architecture: a user interface layer built on Napari, an application logic layer in pure Python modules (`io_operations.py`, `roi_handler.py`, `analysis_processor.py`, `utilities.py`), and integration with established scientific libraries (NumPy, SciPy, scikit-image, OpenCV, Shapely).
 
-**Build vs. Contribute Decision:** We evaluated contributing to existing platforms but identified fundamental mismatches. ImageJ/Fiji plugins like TrackMate excel at spatial object detection (tracking *where* particles exist across frames) but are not designed for temporal event analysis (detecting *when* intensity transients occur). In validation testing, TrackMate detected 18,000 spots while `TransiScope` identified 13 temporal events from identical data—these tools answer fundamentally different biological questions. CellProfiler's batch-processing paradigm and ThunderSTORM's single-molecule focus similarly cannot accommodate our interactive, real-time parameter optimization workflow. Building on Napari allowed us to create a cohesive temporal analysis workflow impossible within existing frameworks.
+**Architectural Rationale:** We chose Napari as our visualization foundation because it provides native support for n-dimensional data common in microscopy, interactive shape layers for ROI drawing, and a Qt-based plugin architecture that enables seamless GUI integration. This choice allows researchers to leverage familiar image navigation controls while accessing our specialized temporal analysis tools through a docked widget panel.
 
 **Key Design Trade-offs:**
 
-1. **GUI-first vs. scriptable API**: We prioritized accessibility for non-programmers, with modular architecture enabling future API exposure.
-2. **Algorithm breadth vs. depth**: Multiple detection methods (DoG, Otsu, step detection) with automated parameterization let users choose approaches suited to their signal characteristics.
-3. **Data-driven parameterization**: The "Auto-set Parameters" feature analyzes ROI intensity traces to propose optimal detection thresholds, replacing subjective manual tuning with reproducible, signal-adapted settings.
+1. **GUI-first vs. scriptable API**: We prioritized accessibility for non-programmers over command-line flexibility. However, our modular architecture—with analysis logic separated from the GUI layer—enables future API exposure for batch processing and pipeline integration without architectural changes.
+
+2. **Algorithm breadth vs. depth**: Rather than implementing one highly specialized detection algorithm, we provide multiple methods (DoG, Otsu thresholding, step detection) with automated parameterization. This breadth lets users choose approaches suited to their specific signal characteristics, from fast calcium transients to slower vesicle fusion events.
+
+3. **Data-driven parameterization**: The "Auto-set Parameters" feature represents our core innovation—analyzing ROI intensity traces to propose optimal detection thresholds automatically. This replaces subjective manual tuning with reproducible, signal-adapted settings derived from each dataset's actual characteristics.
 
 # Research Impact Statement
 
