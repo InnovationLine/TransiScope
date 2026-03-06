@@ -54,7 +54,22 @@ TransiScope makes sophisticated event detection accessible to biologists without
 
 ## Installation
 
-We recommend installing BioImageSuiteLite into a dedicated Python virtual environment.
+### Option 1: Standalone Installers (Recommended for most users)
+
+Download the pre-built installer for your operating system — **no Python installation required**:
+
+| Platform | Download |
+|----------|----------|
+| Windows | [TransiScope-Windows.zip](https://github.com/InnovationLine/TransiScope/releases/latest) |
+| macOS | [TransiScope-macOS.zip](https://github.com/InnovationLine/TransiScope/releases/latest) |
+
+**Windows:** Extract the ZIP and run `TransiScope/TransiScope.exe`
+
+**macOS:** Extract the ZIP and double-click `TransiScope.app`. If you see a security warning, go to System Preferences → Security & Privacy and click "Open Anyway".
+
+### Option 2: Install via pip (For Python users)
+
+If you prefer using Python or want to integrate TransiScope into your workflow:
 
 ```bash
 # First, create and activate a virtual environment
