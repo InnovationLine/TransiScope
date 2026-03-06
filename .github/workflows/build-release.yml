@@ -1,0 +1,95 @@
+name: Build Release Installers
+
+on:
+  workflow_dispatch:  # Manual trigger only - prevents auto DOI creation
+    inputs:
+      version:
+        description: 'Version tag (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          pip install numpy scipy opencv-python-headless tifffile scikit-image "napari[all]" shapely ruptures matplotlib
+          pip install -e .
+      
+      - name: Build Windows executable
+        run: |
+          pyinstaller --name TransiScope --onedir --windowed TransiScope/gui_manager.py
+      
+      - name: Create ZIP archive
+        run: |
+          Compress-Archive -Path dist/TransiScope -DestinationPath TransiScope-Windows.zip
+        shell: pwsh
+      
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TransiScope-Windows
+          path: TransiScope-Windows.zip
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          pip install numpy scipy opencv-python-headless tifffile scikit-image "napari[all]" shapely ruptures matplotlib
+          pip install -e .
+      
+      - name: Build macOS application
+        run: |
+          pyinstaller --name TransiScope --onedir --windowed TransiScope/gui_manager.py
+      
+      - name: Create ZIP archive
+        run: |
+          cd dist && zip -r ../TransiScope-macOS.zip TransiScope.app
+      
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TransiScope-macOS
+          path: TransiScope-macOS.zip
+
+  # Artifacts are available for download from the workflow run page
+  # To attach to existing release: Download artifacts, then manually upload to v1.0.0 release
+  # This prevents creating a new DOI via Zenodo auto-archival
+  summary:
+    needs: [build-windows, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summary
+        run: |
+          echo "## Build Complete! 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Artifacts are ready for download:" >> $GITHUB_STEP_SUMMARY
+          echo "- **TransiScope-Windows.zip** - Windows installer" >> $GITHUB_STEP_SUMMARY
+          echo "- **TransiScope-macOS.zip** - macOS installer" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Download artifacts from the 'Artifacts' section below" >> $GITHUB_STEP_SUMMARY
+          echo "2. Go to [Releases](../../releases/tag/${{ inputs.version }})" >> $GITHUB_STEP_SUMMARY
+          echo "3. Edit the release and upload the ZIP files as assets" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "This approach preserves your existing DOI without creating a new version."
