@@ -47,3 +47,5 @@ setup_organization.md
 JOSS_CHECKLIST.md
 IMPLEMENTATION_SUMMARY.md
 NEXT_STEPS.md
+launch_transiscope.py
+*.spec

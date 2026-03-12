@@ -58,14 +58,23 @@ TransiScope makes sophisticated event detection accessible to biologists without
 
 Download the pre-built installer for your operating system — **no Python installation required**:
 
-| Platform | Download |
-|----------|----------|
-| Windows | [TransiScope-Windows.zip](https://github.com/InnovationLine/TransiScope/releases/latest) |
-| macOS | [TransiScope-macOS.zip](https://github.com/InnovationLine/TransiScope/releases/latest) |
+| Platform | Download | Size | Status |
+|----------|----------|------|--------|
+| Windows | [TransiScope-Windows.zip](https://github.com/InnovationLine/TransiScope/releases/download/v1.0.0/TransiScope-Windows.zip) | ~235 MB | **Tested** |
+| macOS | [TransiScope-macOS.zip](https://github.com/InnovationLine/TransiScope/releases/download/v1.0.0/TransiScope-macOS.zip) | ~548 MB | Experimental |
 
-**Windows:** Extract the ZIP and run `TransiScope/TransiScope.exe`
+**Windows:**
+1. Download and extract `TransiScope-Windows.zip`
+2. Open the extracted `TransiScope` folder
+3. Double-click `TransiScope.exe` to launch
 
-**macOS:** Extract the ZIP and double-click `TransiScope.app`. If you see a security warning, go to System Preferences → Security & Privacy and click "Open Anyway".
+**macOS (experimental):**
+1. Download and extract `TransiScope-macOS.zip`
+2. Open the extracted `TransiScope` folder
+3. Double-click `TransiScope` to launch
+4. If you see a security warning, go to System Preferences → Privacy & Security and click "Open Anyway"
+
+> **Note:** The macOS standalone installer has not been fully tested. If you encounter issues on macOS, please use the pip installation method below or [open an issue](https://github.com/InnovationLine/TransiScope/issues).
 
 ### Option 2: Install via pip (For Python users)
 
